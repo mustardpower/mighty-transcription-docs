@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MightyTranscription - Audio to Text</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #1d1d1d;
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #ccc;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      color: #222;
+    }
+
+    code {
+      background-color: #eee;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    img {
+      padding: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>MightyTranscription</h1>
+    <p>Audio to Text</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>📦 What is MightyTranscription?</h2>
+      <p>MightyTranscription is a powerful Unreal Engine plugin that converts audio input into accurate text using OpenAI's Whisper library. Perfect for in-game transcription, subtitles, voice commands, and more.</p>
+    </section>
+
+    <section>
+      <h2>🚀 How to Install</h2>
+      <ol>
+        <li>Download the plugin from the Fab store.</li>
+        <li>Enable <code>MightyTranscription</code> in the Plugin Manager.</li>
+	<li>Restart the Unreal Engine Editor.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>🔧 How to Use</h2>
+      <p>After enabling the plugin:</p>
+      <ul>
+        <li>Open a blueprint where you want to convert the audio to text</li>
+        <li>Right click the blueprint editor and search for 'Download Model'. Now create a Mighty Transcription > 'Download Model' async blueprint node</li>
+	<li>Link the node to the 'BeginPlay' event in your blueprint or anywhere else which will be executed</li>
+	<li>Set the 'ModelName' parameter to one of the models at https://huggingface.co/ggerganov/whisper.cpp or use the default 'base.en' model</li>
+	<li>Right click the blueprint editor and search for 'Transcribe Input File'. Create a 'Transcribe Input File' blueprint node</li>
+	<li>Create an FString variable e.g. MyTranscribedText to store the transcribed text</li>
+	<li>Create node to set the value of the FString variable e.g. Set MyTranscribedText</li>
+	<li>Link the 'OnSuccess' output to the input execution pin of the 'Set MyTranscribedText' node.</li>
+	<li>Drag from the 'Params' input on the 'Transcribe Input File' node and place a 'Make Transcription Params' node</li>
+	<li>Link the 'ModelPath' output pin on the 'Download Model' async node to the 'ModelPath' property in the Transcription Params struct</li>
+	<li>Now set the 'Input File Path' property in the Transcription Params struct to the path of your audio file e.g C:\myaudio.wav</li>
+	<li>Executing this blueprint code should now convert the audio file to an FString and store the output in 'MyTranscribedText' variable</li>
+
+	<p>Your final blueprint should look like:</p>
+
+	<img src="images/FinalBlueprint.png" alt="Final blueprint">
+      </ul>
+    </section>
+
+    <section>
+      <h2>💬 Support</h2>
+      <p>If you have any questions, suggestions or issues, feel free to raise a github issue at https://github.com/mustardpower/mighty-transcription-docs/issues</p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 MightyTranscription Plugin. Paul Gothard. All rights reserved.
+  </footer>
+
+</body>
+</html>
