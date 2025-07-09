@@ -109,12 +109,24 @@
 	<li>Drag from the 'Params' input on the 'Transcribe Input File' node and place a 'Make Transcription Params' node</li>
 	<li>Link the 'ModelPath' output pin on the 'Download Model' async node to the 'ModelPath' property in the Transcription Params struct</li>
 	<li>Now set the 'Input File Path' property in the Transcription Params struct to the path of your audio file e.g C:\myaudio.wav</li>
-	<li>Executing this blueprint code should now convert the audio file to an FString and store the output in 'MyTranscribedText' variable</li>
+	<li>Executing this blueprint code should now extract each segment of the audio file and return them in an FTranscriptionResult structure</li>
 
+  <h3>How to get the extracted text from the FTranscriptionResult structure</h3>
+  <li>Right click the blueprint editor and search for 'Get Transcribed Text'. Create a 'Get Transcribed Text' blueprint node.</li>
+  <li>Attach the 'FTranscriptionResult' returned from 'Transcribed Input File' function to the input pin of 'Get Transcribed Text.</li>
+  <li>Loop over each element in the array of FSegmentResult's returned from the 'Get Transcribed Text' blueprint node.</li>
+  <li>Now you can print each of the segments of text extracted from the audio or do whatever you like instead!</li>
 	<p>Your final blueprint should look like:</p>
 
 	<img src="images/FinalBlueprint.png" alt="Final blueprint">
       </ul>
+    
+    <h3>Note on FTranscriptionResult</h3>
+    <p>The FTranscriptionResult structure stores each of the audio segments in an FSegmentResult structure. The FSegmentResult structure holds the individual
+      token results obtained from the language model used. From the FTokenResult structures you can obtain the individual words associated with each token and
+      the calculated probability that this is was the correct word. This could be used for triggering commands on specific phrases but there is no handling in
+      the plugin to do that yet.
+    </p>
     </section>
 
     <section>
