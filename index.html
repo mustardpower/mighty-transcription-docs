@@ -100,26 +100,28 @@
       <ul>
         <li>Open a blueprint where you want to convert the audio to text</li>
         <li>Right click the blueprint editor and search for 'Download Model'. Now create a Mighty Transcription > 'Download Model' async blueprint node</li>
-	<li>Link the node to the 'BeginPlay' event in your blueprint or anywhere else which will be executed</li>
-	<li>Set the 'ModelName' parameter to one of the models at https://huggingface.co/ggerganov/whisper.cpp or use the default 'base.en' model</li>
-	<li>Right click the blueprint editor and search for 'Transcribe Input File'. Create a 'Transcribe Input File' blueprint node</li>
-	<li>Create an FString variable e.g. MyTranscribedText to store the transcribed text</li>
-	<li>Create node to set the value of the FString variable e.g. Set MyTranscribedText</li>
-	<li>Link the 'OnSuccess' output to the input execution pin of the 'Set MyTranscribedText' node.</li>
-	<li>Drag from the 'Params' input on the 'Transcribe Input File' node and place a 'Make Transcription Params' node</li>
-	<li>Link the 'ModelPath' output pin on the 'Download Model' async node to the 'ModelPath' property in the Transcription Params struct</li>
-	<li>Now set the 'Input File Path' property in the Transcription Params struct to the path of your audio file e.g C:\myaudio.wav</li>
-	<li>Executing this blueprint code should now extract each segment of the audio file and return them in an FTranscriptionResult structure</li>
+		<li>Link the node to the 'BeginPlay' event in your blueprint or anywhere else which will be executed</li>
+		<li>Set the 'ModelName' parameter to one of the models at https://huggingface.co/ggerganov/whisper.cpp or use the default 'base.en' model</li>
+		<li>Right click the blueprint editor and search for 'Transcribe Input File'. Create a 'Transcribe Input File' blueprint node</li>
+		<li>Create an FString variable e.g. MyTranscribedText to store the transcribed text</li>
+		<li>Create node to set the value of the FString variable e.g. Set MyTranscribedText</li>
+		<li>Link the 'OnSuccess' output to the input execution pin of the 'Set MyTranscribedText' node.</li>
+		<li>Drag from the 'Params' input on the 'Transcribe Input File' node and place a 'Make Transcription Params' node</li>
+		<li>Link the 'ModelPath' output pin on the 'Download Model' async node to the 'ModelPath' property in the Transcription Params struct</li>
+		<li>Now set the 'Input File Path' property in the Transcription Params struct to the path of your audio file e.g C:\myaudio.wav</li>
+		<li>Executing this blueprint code should now extract each segment of the audio file and return them in an FTranscriptionResult structure</li>
+	</ul>
 
   <h3>How to get the extracted text from the FTranscriptionResult structure</h3>
+  <ul>
   <li>Right click the blueprint editor and search for 'Get Transcribed Text'. Create a 'Get Transcribed Text' blueprint node.</li>
   <li>Attach the 'FTranscriptionResult' returned from 'Transcribed Input File' function to the input pin of 'Get Transcribed Text.</li>
   <li>Loop over each element in the array of FSegmentResult's returned from the 'Get Transcribed Text' blueprint node.</li>
   <li>Now you can print each of the segments of text extracted from the audio or do whatever you like instead!</li>
+  </ul>
 	<p>Your final blueprint should look like:</p>
 
 	<img src="images/FinalBlueprint.png" alt="Final blueprint">
-      </ul>
     
     <h3>Note on FTranscriptionResult</h3>
     <p>The FTranscriptionResult structure stores each of the audio segments in an FSegmentResult structure. The FSegmentResult structure holds the individual
@@ -127,6 +129,16 @@
       the calculated probability that this is was the correct word. This could be used for triggering commands on specific phrases but there is no handling in
       the plugin to do that yet.
     </p>
+	
+	<h3>Transcribing from microphone input</h3>
+	<ul>
+	  <li>Attach a 'TranscriptionRealtimeComponent' component to your actor</li>
+	  <li>You can also use the blueprint library function 'Transcribe Input Realtime' which spawns an actor with the 'TranscriptionRealtimeComponent' automatically attached</li>
+	  <li>Bind to the 'On Transcription Result Received event' on the 'TranscriptionRealtimeComponent'</li>
+	  <li>Now follow the same steps as shown in the previous section to extract the transcribed text from the 'FTranscriptionResult'</li>
+	</ul>
+	<p> Note: This component will output the transcribed text at 5 second intervals. You can configure how often the text is written out with the 'ReadIntervalInSeconds' property of the component. </p>
+	<img src="images/RealtimeComponent.png" alt="Realtime transcription">
     </section>
 
     <section>
